@@ -44,6 +44,8 @@ final class Visual_role_editor_wp{
 
         require_once plugin_dir_path( __FILE__ ) . 'includes/class-custom-post-type.php';
 
+        require_once plugin_dir_path( __FILE__ ) . 'includes/general-functioins.php';
+
     }
 
 

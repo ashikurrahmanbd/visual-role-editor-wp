@@ -107,11 +107,17 @@ class Class_vrewp_settings{
 
                                             }else{
 
-                                                foreach($user->allcaps as $cap_key => $cap_value){
+                                                // $clean_arrayy = vrewp_processed_dropped_capabilities($user->allcaps);
 
-                                                    echo '<span> '. $cap_key .'  </span>';
+                                                print_r($user->allcaps);
+
+
+
+                                                // foreach($clean_arrayy as  $cap_value){
+
+                                                //     echo '<span> '. $cap_value .'  </span>';
     
-                                                }
+                                                // }
 
                                             }
 
