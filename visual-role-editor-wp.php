@@ -42,6 +42,8 @@ final class Visual_role_editor_wp{
 
         require_once plugin_dir_path( __FILE__ ) . 'includes/class-vrewp-enqueue-assets.php';
 
+        require_once plugin_dir_path( __FILE__ ) . 'includes/class-custom-post-type.php';
+
     }
 
 
@@ -51,6 +53,8 @@ final class Visual_role_editor_wp{
         Class_vrewp_settings::settings_init();
 
         Class_vrewp_enqueue_assets::assets_init();
+
+        Class_vrewp_custom_post_type::cpt_init();
 
     }
 

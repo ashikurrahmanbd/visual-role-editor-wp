@@ -11,9 +11,19 @@ class Class_vrewp_settings{
 
     public static function vrewp_settings_menu_page_callack(){
 
-       
-
         add_menu_page( 'Visual Role Editor', 'Visual Role Editor', 'manage_options', 'vrewp-configure', [__CLASS__, 'vrewp_settings_page_view_callback'], 'dashicons-privacy'  );
+
+        // Third Submenu - Add New Role
+        add_submenu_page(
+            'vrewp-configure',                      // Parent slug
+            'Add New Role',                         // Page title
+            'Add New Role',                         // Menu title
+            'manage_options',                       // Capability
+            'post-new.php?post_type=vrewp_role'     // Add New Role page for custom post type
+        );
+
+        add_submenu_page( 'vrewp-configure', 'Visual Role View', 'Visual Role View', 'manage_options', 'vrewp-configure', [__CLASS__, 'vrewp_main_menu_as_submenu_callback']);
+
 
     }
 
@@ -101,8 +111,6 @@ class Class_vrewp_settings{
                                             }
 
 
-                                            
-
                                         }
 
                                     ?>
@@ -113,12 +121,9 @@ class Class_vrewp_settings{
                         </div>
                         <?php endforeach; ?>
                         
-
                         
                     </div>
 
-                    
-                  
 
                 </div>
 
@@ -131,6 +136,16 @@ class Class_vrewp_settings{
 
 
     }
+    // end of main menu page
+
+    //start submenu
+    public static function vrewp_main_menu_as_submenu_callback(){
+
+        //nothign need ass its now the parent menus
+
+    }
+
+    
 
 
 
