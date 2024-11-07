@@ -43,3 +43,4 @@ function vrewp_processed_dropped_capabilities($data_array){
 
 
 }
+

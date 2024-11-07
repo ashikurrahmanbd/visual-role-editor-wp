@@ -242,53 +242,49 @@ class Class_vrewp_custom_post_type{
 
     }
 
-    // function for save meta values to the post
     public static function vrewp_save_dropped_capabilities($post_id) {
-
-
         // Ensure you're updating the correct post type
         if (get_post_type($post_id) != 'vrewp_role') {
             return;
         }
-
+    
         // Check if we're doing an autosave
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-
+    
         // Make sure we have new dragged values
         if (isset($_POST['vrewp_dropped_values'])) {
-
+    
             // Decode JSON data and ensure it's a valid array
             $dropped_values = json_decode(stripslashes($_POST['vrewp_dropped_values']), true);
-
+    
             if (is_array($dropped_values)) {
-                // Flatten the array and remove any empty or unnecessary values
-                $flattened_values = [];
-                foreach ($dropped_values as $value) {
-                    if (is_array($value)) {
-                        // If nested, merge the inner arrays
-                        $flattened_values = array_merge($flattened_values, $value);
-                    } else {
-                        // Otherwise, just add the value
-                        $flattened_values[] = $value;
-                    }
-                }
-
-                // Remove duplicates from the flattened array
-                $clean_values = array_unique($flattened_values);
-
-                // Update the meta with clean values
-                update_post_meta($post_id, '_dragged_capabilities', $clean_values);
-
+                // Remove any empty values
+                $dropped_values = array_filter($dropped_values, function($value) {
+                    return $value !== ''; // Exclude empty strings
+                });
+    
+                // Get existing values, ensuring it's an array
+                $existing_values = get_post_meta($post_id, '_dragged_capabilities', true);
+                $existing_values = is_array($existing_values) ? $existing_values : [];
+    
+                // Merge without duplicates
+                $combined_values = array_unique(array_merge($existing_values, $dropped_values));
+    
+                // Update the meta with clean combined values
+                update_post_meta($post_id, '_dragged_capabilities', $combined_values);
+    
+                // Create custom role based on post meta
+                self::create_role_from_post_meta($post_id, $combined_values);
+    
             } else {
+    
                 // If no valid values, clear the post meta
                 delete_post_meta($post_id, '_dragged_capabilities');
+    
             }
         }
-
-
-
     }
     
     // Function to create a custom role and assign capabilities
@@ -322,13 +318,17 @@ class Class_vrewp_custom_post_type{
     // Hook into the 'before_trash_post' action to handle the role deletion
 
     public static function vrewp_reassign_users_on_role_trash($post_id) {
+
+        $role_name = get_the_title($post_id);  // Using post title as the role name
+        $role_slug = sanitize_title($role_name); 
+
         // Check if the post type is 'vrewp_role' (the custom post type for roles)
         if (get_post_type($post_id) != 'vrewp_role') {
             return;
         }
 
         // Get the role slug from the post meta (assuming '_role_slug' stores the slug)
-        $role_slug = get_post_meta($post_id, '_role_slug', true);
+        $role_slug = get_post_meta($post_id, $role_slug, true);
         if (!$role_slug) {
             return;
         }
@@ -355,19 +355,23 @@ class Class_vrewp_custom_post_type{
 
     //clean meta data as well
     public static function vrewp_cleanup_role_on_delete($post_id) {
+
+        $role_name = get_the_title($post_id);  // Using post title as the role name
+        $role_slug = sanitize_title($role_name); 
+
         // Check if the post type is 'vrewp_role'
         if (get_post_type($post_id) != 'vrewp_role') {
             return;
         }
     
         // Get the role slug from the post meta
-        $role_slug = get_post_meta($post_id, '_role_slug', true);
+        $role_slug = get_post_meta($post_id, $role_slug, true);
         if (!$role_slug) {
             return;
         }
     
         // Delete associated post meta data for the role
-        delete_post_meta($post_id, '_role_slug');  // Role slug meta
+        delete_post_meta($post_id, $role_slug);  // Role slug meta
         delete_post_meta($post_id, '_dragged_capabilities');  // Role capabilities meta (if exists)
     
         // Perform any additional cleanup if necessary
