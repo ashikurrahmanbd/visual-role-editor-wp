@@ -48,7 +48,8 @@ class Class_vrewp_settings{
                 <div class="vrewp-users-grid-wrapper">
                     
                     <h3>Available Users</h3>
-                   
+
+
                     <div class="vrewp-users-grid">
 
                         <?php foreach($wp_users_list as $user): ?>
@@ -80,9 +81,13 @@ class Class_vrewp_settings{
                                 <span> <?php 
 
                                     if(!empty($user->roles)){
+
                                         echo $user->roles[0];
+
                                     }else{
+
                                         echo 'No Role Assigned';
+
                                     }
 
                                 ?> </span>

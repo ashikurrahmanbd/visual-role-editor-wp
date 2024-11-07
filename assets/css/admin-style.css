@@ -112,3 +112,29 @@ img.wrewp-user-image{
     margin-bottom: 4px;
     
 }
+
+.vrewp-draggable-caps{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.vrewp-draggable-caps input[type="button"]:hover{
+
+    
+    cursor:move;
+
+}
+
+.vrewp-caps-dropped-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 75px;
+    min-height: 250px;
+    border: 2px dashed #ccc;
+}
+
+.vrewp-caps-dropped-area h2{
+    font-size: 20px !important;
+}

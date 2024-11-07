@@ -14,6 +14,9 @@ class Class_vrewp_enqueue_assets{
 
         wp_enqueue_style( 'vrewp-admin-style', plugin_dir_url(__FILE__) . '../assets/css/admin-style.css', [], filemtime(__FILE__));
 
+        wp_enqueue_script( 'vrewp-admin-script', plugin_dir_url( __FILE__ ) . '../assets/js/admin-script.js' , [], filemtime(__FILE__), true );
+
+
     }
 
 
